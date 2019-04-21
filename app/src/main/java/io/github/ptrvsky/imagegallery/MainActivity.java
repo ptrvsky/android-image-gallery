@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -30,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentListener = new GalleryFragment.FragmentListener() {
             @Override
-            public void onRecyclerViewItemClicked(File image) {
-                startImageFullViewFragment(image);
+            public void onRecyclerViewItemClicked(File[] images, int imageNumber) {
+                startSliderFragment(images, imageNumber);
             }
         };
         startFragment();
@@ -39,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Fragments
     public void startFragment() {
-        int selectedStyle = sp.getInt("selected_style_index", -1);
-        String directoryPath = sp.getString("directory_path", "");
+        int selectedStyle = sp.getInt("selectedStyleIndex", -1);
+        String directoryPath = sp.getString("directoryPath", "");
         File tmpFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + directoryPath);
         if (tmpFile.exists() && tmpFile.isDirectory() && !directoryPath.equals("")) {
             if (selectedStyle == 0 || selectedStyle == 1) {
@@ -73,13 +74,14 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    public void startImageFullViewFragment(File file) {
-        Fragment imageFullViewFragment = new ImageFullViewFragment();
+    public void startSliderFragment(File[] images, int imageNumber) {
+        Fragment imageSlideFragment = new ImageSlideFragment();
         Bundle args = new Bundle();
-        args.putString("imagePath", file.getAbsolutePath());
-        imageFullViewFragment.setArguments(args);
+        args.putInt("viewPagerPosition", imageNumber);
+        imageSlideFragment.setArguments(args);
+        ((ImageSlideFragment) imageSlideFragment).setImages(images);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, imageFullViewFragment);
+        fragmentTransaction.replace(R.id.fragment_container, imageSlideFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

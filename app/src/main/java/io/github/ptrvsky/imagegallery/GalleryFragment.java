@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.io.File;
 
 public class GalleryFragment extends Fragment {
@@ -21,6 +20,7 @@ public class GalleryFragment extends Fragment {
     private SharedPreferences sp;
     private SharedPreferences.Editor spe;
     private int layoutId;
+    private MyAdapter adapter;  // Adapter with image data
     private FragmentListener fragmentListener;  // OnClick listener created to deliver information about image click to main activity
 
     @Override
@@ -28,12 +28,11 @@ public class GalleryFragment extends Fragment {
 
         sp = getActivity().getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE);
         spe = sp.edit();
-        layoutId = sp.getInt("selected_style_index", 0);
+        layoutId = sp.getInt("selectedStyleIndex", 0);
 
         View view;
         RecyclerView recyclerView;
         RecyclerView.LayoutManager layoutManager;
-        MyAdapter adapter;  // Adapter with image data
 
         if (layoutId == 0) {    // Setting up recycler view to show images from selected directory in grid view style
 
@@ -42,7 +41,7 @@ public class GalleryFragment extends Fragment {
             recyclerView.setHasFixedSize(true);
             layoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 3);
             recyclerView.setLayoutManager(layoutManager);
-            adapter = new MyAdapter(R.layout.cell_grid, sp.getString("directory_path", ""));
+            adapter = new MyAdapter(R.layout.cell_grid, sp.getString("directoryPath", ""));
 
         } else {    // Setting up recycler view to show images from selected directory in list view style
 
@@ -51,14 +50,14 @@ public class GalleryFragment extends Fragment {
             recyclerView.setHasFixedSize(true);
             layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
             recyclerView.setLayoutManager(layoutManager);
-            adapter = new MyAdapter(R.layout.cell_list, sp.getString("directory_path", ""));
+            adapter = new MyAdapter(R.layout.cell_list, sp.getString("directoryPath", ""));
 
         }
 
         MyAdapter.AdapterListener listener = new MyAdapter.AdapterListener() {
             @Override
-            public void onItemClick(File image) {
-                fragmentListener.onRecyclerViewItemClicked(image);
+            public void onItemClick(File[] images, int imageNumber) {
+                fragmentListener.onRecyclerViewItemClicked(images, imageNumber);
             }
         };
 
@@ -85,13 +84,13 @@ public class GalleryFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.show_as_list) {
-            spe.putInt("selected_style_index", 1);
+            spe.putInt("selectedStyleIndex", 1);
             spe.commit();
             ((MainActivity) getActivity()).startFragment();
             return true;
         }
         if (id == R.id.show_as_grid) {
-            spe.putInt("selected_style_index", 0);
+            spe.putInt("selectedStyleIndex", 0);
             spe.commit();
             ((MainActivity) getActivity()).startFragment();
             return true;
@@ -104,7 +103,7 @@ public class GalleryFragment extends Fragment {
     }
 
     public interface FragmentListener {
-        void onRecyclerViewItemClicked(File image);
+        void onRecyclerViewItemClicked(File[] images, int imageNumber);
     }
 
     public void setFragmentListener(FragmentListener fragmentListener) {

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         }
     };
 
-
     public MyAdapter(int cellLayoutId, String directoryPath) {
         this.cellLayoutId = cellLayoutId;
         this.dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + directoryPath);
@@ -47,6 +47,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         private TextView resolution;
         private TextView size;
         private File imageFile;
+        private int imageNumber;
 
         public ViewHolder(View view) {
             super(view);
@@ -60,7 +61,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 @Override
                 public void onClick(View view) {
                     if (adapterListener != null) {
-                        adapterListener.onItemClick(imageFile);
+                        adapterListener.onItemClick(images, imageNumber);
                     }
                 }
             });
@@ -85,6 +86,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             viewHolder.resolution.setText(bmp.getHeight() + "x" + bmp.getWidth() + " px");
             viewHolder.size.setText(String.valueOf(images[i].length() / 1024) + " kB");
         }
+        viewHolder.imageNumber = i;
     }
 
     @Override
@@ -93,7 +95,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     public interface AdapterListener {
-        void onItemClick(File image);
+        void onItemClick(File[] images, int imageNumber);
     }
 
     public void setAdapterListener(AdapterListener adapterListener) {

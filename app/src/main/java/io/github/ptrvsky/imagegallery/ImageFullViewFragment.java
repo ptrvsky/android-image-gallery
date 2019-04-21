@@ -4,6 +4,8 @@ import android.app.WallpaperManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -32,15 +35,17 @@ public class ImageFullViewFragment extends Fragment {
         final Bitmap bmp = BitmapFactory.decodeFile(imagePath);
         ImageView img = (ImageView) view.findViewById(R.id.imageViewFull);
         img.setImageBitmap(bmp);
-
+        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setHasOptionsMenu(true);
-        ((MainActivity) getActivity()).getSupportActionBar().hide();    // Hide action bar to show image in full view
+        ((MainActivity) getActivity()).getSupportActionBar().hide();
         return view;
     }
 
     @Override
     public void onStop() {  // Method that bring back action bar when user move back from image full view fragment
         super.onStop();
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ((MainActivity) getActivity()).getSupportActionBar().show();
     }
 
