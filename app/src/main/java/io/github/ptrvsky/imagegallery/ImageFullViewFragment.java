@@ -4,8 +4,6 @@ import android.app.WallpaperManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,9 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -29,24 +25,13 @@ public class ImageFullViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_image_full_view, container, false);
-
         imagePath = getArguments().getString("imagePath");  // Get image path from fragment argument
         // Set image for ImageView
         final Bitmap bmp = BitmapFactory.decodeFile(imagePath);
         ImageView img = (ImageView) view.findViewById(R.id.imageViewFull);
         img.setImageBitmap(bmp);
-        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setHasOptionsMenu(true);
-        ((MainActivity) getActivity()).getSupportActionBar().hide();
         return view;
-    }
-
-    @Override
-    public void onStop() {  // Method that bring back action bar when user move back from image full view fragment
-        super.onStop();
-        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        ((MainActivity) getActivity()).getSupportActionBar().show();
     }
 
     @Override
@@ -65,6 +50,9 @@ public class ImageFullViewFragment extends Fragment {
         if (id == R.id.share) {
             shareImage(new File(imagePath));
             return true;
+        }
+        if (id == R.id.details) {
+            ((MainActivity) getActivity()).startDetailsFragment(new File(imagePath));
         }
         return super.onOptionsItemSelected(item);
     }
