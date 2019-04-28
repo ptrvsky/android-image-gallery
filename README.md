@@ -20,4 +20,4 @@ Android application that shows images from selected directory in various view st
 - Image details and EXIF informations should be displayed in two Fragments using View Pager
 
 ## Screenshots
-<img src="https://i.imgur.com/pxa5dew.png" alt="Grid View" width="160"/> <img src="https://i.imgur.com/4bszyJs.png" alt="List View" width="160"/> <img src="https://i.imgur.com/QEo7YkZ.png" alt="Settings" width="160"/> <img src="https://i.imgur.com/7ImfAuj.png" alt="Full View" width="160"/> <img src="https://i.imgur.com/ckkagfm.png" alt="Details" width="160"/>
+<img src="https://i.imgur.com/pxa5dew.png" alt="Grid View" width="160"/> <img src="https://i.imgur.com/4bszyJs.png" alt="List View" width="160"/> <img src="https://i.imgur.com/sWSXdfT.png" alt="Settings" width="160"/> <img src="https://i.imgur.com/7ImfAuj.png" alt="Full View" width="160"/> <img src="https://i.imgur.com/ckkagfm.png" alt="Details" width="160"/>
