@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="130dp"
@@ -28,6 +26,7 @@
         app:layout_constraintTop_toTopOf="@+id/spinner" />
 
     <View
+        android:id="@+id/view11"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
@@ -45,39 +44,42 @@
         android:layout_height="20dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Enter directory path:"
+        android:text="Directory path"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <EditText
-        android:id="@+id/directoryPathEditText"
+    <TextView
+        android:id="@+id/directoryPathTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
+        android:text=""
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <Button
-        android:id="@+id/save_button"
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Save"
+        android:onClick="pickDirectory"
+        android:text="Change"
+        app:layout_constraintBottom_toBottomOf="@+id/directoryPathTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/directoryPathEditText" />
+        app:layout_constraintTop_toTopOf="@+id/textView3" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <Button
+        android:id="@+id/exit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="/sdcard/"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/directoryPathEditText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/directoryPathEditText" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Exit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

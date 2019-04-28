@@ -1,5 +1,6 @@
 package io.github.ptrvsky.imagegallery;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.support.v4.app.FragmentManager;
@@ -38,9 +39,9 @@ public class MainActivity extends AppCompatActivity {
     // Fragments
     public void startFragment() {
         int selectedStyle = sp.getInt("selectedStyleIndex", -1);
-        String directoryPath = sp.getString("directoryPath", "");
+        String directoryPath = sp.getString("directoryPath", null);
         File tmpFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + directoryPath);
-        if (tmpFile.exists() && tmpFile.isDirectory() && !directoryPath.equals("")) {
+        if (tmpFile.exists() && tmpFile.isDirectory() && directoryPath != null) {
             if (selectedStyle == 0 || selectedStyle == 1) {
                 startGalleryFragment();
             } else {
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             startSettingsFragment();
-            if (!directoryPath.equals("")) {
+            if (directoryPath != null) {
                 Toast.makeText(getApplicationContext(), "Directory doesn't exists", Toast.LENGTH_SHORT).show();
             }
         }
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, settingsFragment);
         fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
     public void startSliderFragment(File[] images, int imageNumber) {
@@ -98,6 +99,28 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         } else {
             getSupportActionBar().show();
+        }
+    }
+
+    public void pickDirectory(View view) {
+        Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        i.addCategory(Intent.CATEGORY_DEFAULT);
+        startActivityForResult(Intent.createChooser(i, "Choose directory"), 9999);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode) {
+            case 9999:
+                String directoryPath;
+                try {
+                    directoryPath = data.getData().getPath().split(":")[1];
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    directoryPath = "";
+                }
+                spe.putString("directoryPath", directoryPath);
+                spe.commit();
+                startSettingsFragment();
+                break;
         }
     }
 

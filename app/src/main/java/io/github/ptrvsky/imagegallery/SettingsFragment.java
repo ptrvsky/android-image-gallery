@@ -12,13 +12,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class SettingsFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private String[] styles = {"Grid", "List"};
     private SharedPreferences sp;
     private SharedPreferences.Editor spe;
-    private EditText editText;  // EditText with directoryPath
+    private TextView textView;  // TextView with directory path
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -26,8 +27,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
         sp = getActivity().getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE);
         spe = sp.edit();
-        editText = (EditText) view.findViewById(R.id.directoryPathEditText);
-        editText.setText(sp.getString("directoryPath", ""));
+        textView = (TextView) view.findViewById(R.id.directoryPathTextView);
+        textView.setText("sdcard/" + sp.getString("directoryPath", ""));
 
         // Creating spinner which let user choose gallery style
         Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
@@ -39,7 +40,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         }
         spinner.setSelection(sp.getInt("selectedStyleIndex", 0));
 
-        Button b = (Button) view.findViewById(R.id.save_button);
+        Button b = (Button) view.findViewById(R.id.exit_button);
         b.setOnClickListener(this);
         setHasOptionsMenu(true);
 
@@ -47,11 +48,9 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
     }
 
-    // OnClick method for "Save" button click
+    // OnClick method for "Exit" button click
     @Override
     public void onClick(View view) {
-        spe.putString("directoryPath", editText.getText().toString());
-        spe.commit();
         ((MainActivity) getActivity()).startFragment();
     }
 
