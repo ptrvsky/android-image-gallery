@@ -25,6 +25,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Settings");
         sp = getActivity().getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE);
         spe = sp.edit();
         textView = (TextView) view.findViewById(R.id.directoryPathTextView);

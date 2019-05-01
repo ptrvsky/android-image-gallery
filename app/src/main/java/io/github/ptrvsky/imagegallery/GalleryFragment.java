@@ -26,6 +26,8 @@ public class GalleryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Gallery");
+
         sp = getActivity().getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE);
         spe = sp.edit();
         layoutId = sp.getInt("selectedStyleIndex", 0);

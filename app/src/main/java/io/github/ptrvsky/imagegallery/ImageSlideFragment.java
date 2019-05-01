@@ -1,11 +1,14 @@
 package io.github.ptrvsky.imagegallery;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +47,6 @@ public class ImageSlideFragment extends Fragment {
         super.onStop();
         ((MainActivity) getActivity()).getSupportActionBar().show();
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Gallery");
     }
 
     public void setImages(File[] images) {

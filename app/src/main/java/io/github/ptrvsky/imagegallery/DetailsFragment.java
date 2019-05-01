@@ -24,13 +24,19 @@ public class DetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_details, container, false);
+        ((MainActivity) getActivity()).getSupportActionBar().hide();
 
         FragmentManager fragmentManager = getChildFragmentManager();
         mPager = (ViewPager) view.findViewById(R.id.pagerDetails);
         pagerAdapter = new ScreenSlidePagerAdapter(fragmentManager);
         mPager.setAdapter(pagerAdapter);
-
         return view;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((MainActivity) getActivity()).getSupportActionBar().show();
     }
 
     public void setImageFile(File imageFile) {
@@ -62,6 +68,15 @@ public class DetailsFragment extends Fragment {
         @Override
         public int getCount() {
             return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            if (position == 0) {
+                return "Details";
+            } else {
+                return "EXIF";
+            }
         }
 
     }

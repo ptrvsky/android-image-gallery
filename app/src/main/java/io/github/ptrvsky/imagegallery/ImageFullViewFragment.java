@@ -20,12 +20,15 @@ import java.io.IOException;
 public class ImageFullViewFragment extends Fragment {
 
     private String imagePath;   // String with selected image file path
+    private File imageFile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_image_full_view, container, false);
+
         imagePath = getArguments().getString("imagePath");  // Get image path from fragment argument
+        imageFile = new File(imagePath);
         // Set image for ImageView
         final Bitmap bmp = BitmapFactory.decodeFile(imagePath);
         ImageView img = (ImageView) view.findViewById(R.id.imageViewFull);
@@ -48,11 +51,11 @@ public class ImageFullViewFragment extends Fragment {
             return true;
         }
         if (id == R.id.share) {
-            shareImage(new File(imagePath));
+            shareImage(imageFile);
             return true;
         }
         if (id == R.id.details) {
-            ((MainActivity) getActivity()).startDetailsFragment(new File(imagePath));
+            ((MainActivity) getActivity()).startDetailsFragment(imageFile);
         }
         return super.onOptionsItemSelected(item);
     }
