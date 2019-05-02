@@ -41,8 +41,6 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         }
         spinner.setSelection(sp.getInt("selectedStyleIndex", 0));
 
-        Button b = (Button) view.findViewById(R.id.exit_button);
-        b.setOnClickListener(this);
         setHasOptionsMenu(true);
 
         return view;
