@@ -75,12 +75,26 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void onBindViewHolder(MyAdapter.ViewHolder viewHolder, final int i) {
         // Setting image to ImageView
         viewHolder.imageFile = images[i];
-        final Bitmap bmp = BitmapFactory.decodeFile(viewHolder.imageFile.getAbsolutePath());
+
+        // Loading a bitmap:
+        // To optimize memory usage, at first BitmapFactory option is set to true so we can get image size without loading image to memory.
+        // Then calculateInSampleSize method, based on real image size and size we want, return inSampleSize option value.
+        // At the end, inJustDecodeBounds is set back to false so we can load image with properly set inSampleSize option.
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        Bitmap bmpWithoutLoadingToMemory = BitmapFactory.decodeFile(viewHolder.imageFile.getAbsolutePath(), options);
+        int imageRealHeight = options.outHeight;
+        int imageRealWidth = options.outWidth;
+        options.inSampleSize = calculateInSampleSize(options, 300, 300);
+        options.inJustDecodeBounds = false;
+        final Bitmap bmp = BitmapFactory.decodeFile(viewHolder.imageFile.getAbsolutePath(), options);
+
         viewHolder.img.setImageBitmap(bmp);
         viewHolder.img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         if (cellLayoutId == R.layout.cell_list) {    // Setting additional information (only if we use list layout)
             viewHolder.imageName.setText(viewHolder.imageFile.getName());
-            viewHolder.resolution.setText(bmp.getHeight() + "x" + bmp.getWidth() + " px");
+            viewHolder.resolution.setText(imageRealWidth + "x" + imageRealHeight + " px");
             viewHolder.size.setText(String.valueOf(images[i].length() / 1024) + " kB");
         }
         viewHolder.imageNumber = i;
@@ -98,4 +112,27 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void setAdapterListener(AdapterListener adapterListener) {
         this.adapterListener = adapterListener;
     }
+
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
 }
