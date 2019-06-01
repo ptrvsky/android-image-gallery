@@ -102,7 +102,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return images.length;
+        try {
+            return images.length;
+        } catch (NullPointerException e) {
+            return 0;
+        }
     }
 
     public interface AdapterListener {
