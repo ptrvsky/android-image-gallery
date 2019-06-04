@@ -41,8 +41,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         private ImageView img;
         private TextView imageName;
-        private TextView resolution;
-        private TextView size;
         private File imageFile;
         private int imageNumber;
 
@@ -51,8 +49,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             img = (ImageView) view.findViewById(R.id.img);
             if (cellLayoutId == R.layout.cell_list) {
                 imageName = (TextView) view.findViewById(R.id.imageName);
-                resolution = (TextView) view.findViewById(R.id.resolution);
-                size = (TextView) view.findViewById(R.id.size);
             }
             view.setOnClickListener(new View.OnClickListener() {    // Set onClick Listener to view
                 @Override
@@ -94,8 +90,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         viewHolder.img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         if (cellLayoutId == R.layout.cell_list) {    // Setting additional information (only if we use list layout)
             viewHolder.imageName.setText(viewHolder.imageFile.getName());
-            viewHolder.resolution.setText(imageRealWidth + "x" + imageRealHeight + " px");
-            viewHolder.size.setText(String.valueOf(images[i].length() / 1024) + " kB");
         }
         viewHolder.imageNumber = i;
     }
