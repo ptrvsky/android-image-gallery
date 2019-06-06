@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.io.File;
@@ -30,11 +32,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             return false;
         }
     };
+    private int spanCount;
 
-    public MyAdapter(int cellLayoutId, String directoryPath) {
+    public MyAdapter(int cellLayoutId, String directoryPath, int spanCount) {
         this.cellLayoutId = cellLayoutId;
         this.dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + directoryPath);
         this.images = dir.listFiles(image_filter);
+        this.spanCount = spanCount;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {   // Single image view holder
@@ -80,8 +84,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         Bitmap bmpWithoutLoadingToMemory = BitmapFactory.decodeFile(viewHolder.imageFile.getAbsolutePath(), options);
-        int imageRealHeight = options.outHeight;
-        int imageRealWidth = options.outWidth;
         options.inSampleSize = calculateInSampleSize(options, 300, 300);
         options.inJustDecodeBounds = false;
         final Bitmap bmp = BitmapFactory.decodeFile(viewHolder.imageFile.getAbsolutePath(), options);
@@ -90,6 +92,24 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         viewHolder.img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         if (cellLayoutId == R.layout.cell_list) {    // Setting additional information (only if we use list layout)
             viewHolder.imageName.setText(viewHolder.imageFile.getName());
+        }
+        if (cellLayoutId == R.layout.cell_grid) {
+            // Animation in which images appear in this order:
+            // 1 2 3 4
+            // 2 3 4 5
+            // 3 4 5 6
+            // ...
+            int row = 0; // Calculate image row
+            int j = i;
+            while (j > spanCount-1) {
+                row++;
+                j -= spanCount;
+            }
+            Animation animation = AnimationUtils.loadAnimation(viewHolder.img.getContext(),
+                    android.R.anim.fade_in);
+            animation.setDuration(300);
+            animation.setStartOffset(200*(j+row));
+            viewHolder.itemView.setAnimation(animation);
         }
         viewHolder.imageNumber = i;
     }

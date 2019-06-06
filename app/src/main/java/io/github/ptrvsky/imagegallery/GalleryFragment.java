@@ -22,6 +22,7 @@ public class GalleryFragment extends Fragment {
     private int layoutId;
     private MyAdapter adapter;  // Adapter with image data
     private FragmentListener fragmentListener;  // OnClick listener created to deliver information about image click to main activity
+    private int spanCount = 3;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class GalleryFragment extends Fragment {
             recyclerView.setHasFixedSize(true);
             layoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 3);
             recyclerView.setLayoutManager(layoutManager);
-            adapter = new MyAdapter(R.layout.cell_grid, sp.getString("directoryPath", ""));
+            adapter = new MyAdapter(R.layout.cell_grid, sp.getString("directoryPath", ""), spanCount);
 
         } else {    // Setting up recycler view to show images from selected directory in list view style
 
@@ -52,7 +53,7 @@ public class GalleryFragment extends Fragment {
             recyclerView.setHasFixedSize(true);
             layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
             recyclerView.setLayoutManager(layoutManager);
-            adapter = new MyAdapter(R.layout.cell_list, sp.getString("directoryPath", ""));
+            adapter = new MyAdapter(R.layout.cell_list, sp.getString("directoryPath", ""), spanCount);
 
         }
 
